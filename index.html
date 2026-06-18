@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Jeu de l'As - Édition Psychologique</title>
+    <title>Le Jeu de l'As - Édition Infinie</title>
     <style>
         :root { --bg: #0f1215; --card-bg: #1c252e; --accent: #e91e63; --red: #ff5252; --white: #ffffff; --gold: #ffca28; }
         body { font-family: 'Segoe UI', sans-serif; text-align: center; background: var(--bg); color: #e0e0e0; padding: 20px; }
@@ -14,7 +14,7 @@
         .card-value { font-size: 3rem; font-weight: bold; }
         .card-suit { font-size: 5rem; margin-top: -10px; }
         
-        .instruction { font-size: 1.1rem; font-weight: 600; color: var(--gold); margin: 20px 0; min-height: 100px; line-height: 1.4; border: 1px dashed #444; padding: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; whitespace: pre-line; }
+        .instruction { font-size: 1.1rem; font-weight: 600; color: var(--gold); margin: 20px 0; min-height: 100px; line-height: 1.4; border: 1px dashed #444; padding: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; white-space: pre-wrap; text-align: center; }
         .main-btn { padding: 18px; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; width: 100%; font-weight: bold; margin-bottom: 10px; transition: 0.3s; }
         .main-btn:hover { opacity: 0.9; transform: scale(1.02); }
         
@@ -61,7 +61,7 @@
         </div>
         <div class="instruction" id="instructionArea">Le paquet est prêt.</div>
         <button id="drawBtn" class="main-btn" onclick="drawCard()">PIOCHER UNE CARTE</button>
-        <button id="resetBtn" class="main-btn" onclick="resetGame()" style="display:none; background: #2ecc71;">NOUVEAU CYCLE</button>
+        <button id="resetBtn" class="main-btn" onclick="resetGame()" style="display:none; background: #2ecc71;">VICTOIRE ! RECOMANCER UN CYCLE</button>
         
         <div class="rules-link" onclick="toggleModal(true)">Afficher les règles</div>
 
@@ -77,8 +77,8 @@
         
         <h3>🎯 L'Objectif & Les As</h3>
         <ul>
-            <li><strong>As de TA couleur (La Libération) :</strong> Autorisation de jouir après 11 minutes de masturbation.</li>          
-            <li><strong>As des AUTRES couleurs (La Frustration) :</strong> Orgasme ruiné après 11 minutes de masturbation OU pas d'orgasme (au choix de la maîtresse du jeu).</li>          
+            <li><strong>As de TA couleur (La Libération) :</strong> Fin du jeu ! Autorisation de jouir après 11 minutes de masturbation.</li>          
+            <li><strong>As des AUTRES couleurs (La Frustration) :</strong> Orgasme ruiné après 11 minutes de masturbation OU pas d'orgasme (au choix de la maîtresse). Le jeu continue ensuite !</li>          
         </ul>
 
         <h3>🤴 Les Figures</h3>
@@ -103,11 +103,11 @@
     let lastTime = 0;
 
     function checkMemory() {
-        const savedDeck = localStorage.getItem('deck_psych_v3');
+        const savedDeck = localStorage.getItem('deck_psych_v4');
         if (savedDeck) {
             deck = JSON.parse(savedDeck);
-            targetColor = localStorage.getItem('targetColor_psych_v3');
-            lastTime = parseInt(localStorage.getItem('lastTime_psych_v3') || 0);
+            targetColor = localStorage.getItem('targetColor_psych_v4');
+            lastTime = parseInt(localStorage.getItem('lastTime_psych_v4') || 0);
             document.getElementById('targetDisplay').innerText = targetColor;
             document.getElementById('setup').style.display = 'none';
             document.getElementById('game').style.display = 'block';
@@ -145,7 +145,13 @@
     }
 
     function drawCard() {
-        if (deck.length === 0) return;
+        if (deck.length === 0) {
+            document.getElementById('instructionArea').innerText = "Le paquet est vide ! Tu es arrivé au bout sans trouver ta délivrance... Cycle terminé.";
+            document.getElementById('drawBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'block';
+            localStorage.clear();
+            return;
+        }
         
         const card = deck.pop();
         const isRed = (card.suit === '♥️' || card.suit === '♦️');
@@ -156,31 +162,36 @@
         document.getElementById('valTop').innerText = card.name;
         document.getElementById('suitCenter').innerText = card.suit;
         
+        // Nettoyage strict et complet du texte pour éviter les résidus
+        document.getElementById('instructionArea').innerText = ""; 
+        
         let msg = "";
         let currentTime = card.val;
 
         // Gestion des As
         if (card.name === 'A') {
             if (card.suit === targetColor) {
-                msg = "✨ L'AS DE TA COULEUR : LA LIBÉRATION ! ✨\nAutorisation de jouir après 11 minutes de masturbation.";
+                msg = "✨ L'AS DE TA COULEUR : LA LIBÉRATION ! ✨\n\nAutorisation de jouir après 11 minutes de masturbation. C'est la fin du jeu !";
+                document.getElementById('drawBtn').style.display = 'none';
+                document.getElementById('resetBtn').style.display = 'block';
+                localStorage.clear();
             } else {
-                msg = "💀 AS DE FRUSTRATION... 💀\nOrgasme ruiné après 11 minutes de masturbation OU pas d'orgasme si la maîtresse du jeu le décide.";
+                msg = "💀 AS DE FRUSTRATION... 💀\n\nOrgasme ruiné après 11 minutes de masturbation OU pas d'orgasme si la maîtresse le décide.\n\nLe supplice continue, pioche la carte suivante quand tu es prêt.";
+                currentTime = 11;
+                save();
             }
-            document.getElementById('drawBtn').style.display = 'none';
-            document.getElementById('resetBtn').style.display = 'block';
-            localStorage.clear();
             updateDisplay(msg);
             return;
         }
 
-        // Gestion des figures selon tes profils exacts
+        // Gestion des figures
         if (card.name === 'J') {
             let totalValet = 10 + lastTime;
-            msg = `🕵️‍♂️ VALET (Le Temps) :\n10 min + temps de la veille (${lastTime} min).\nSoit : ${totalValet} minutes de masturbation sans jouir.`;
+            msg = `🕵️‍♂️ VALET (Le Temps) :\n10 min + temps précédent (${lastTime} min).\n\nSoit : ${totalValet} minutes de masturbation sans jouir.`;
             currentTime = totalValet;
         } 
         else if (card.name === 'Q') {
-            msg = "🛑 DAME (La Modération) :\nFin de la session immédiate.\nTu es condamné à 24 heures d'abstinence strictes.";
+            msg = "🛑 DAME (La Modération) :\nFin de la session immédiate.\n\nTu es condamné à 24 heures d'abstinence strictes.";
             currentTime = 0;
         } 
         else if (card.name === 'K') {
@@ -207,9 +218,9 @@
     }
 
     function save() {
-        localStorage.setItem('deck_psych_v3', JSON.stringify(deck));
-        localStorage.setItem('targetColor_psych_v3', targetColor);
-        localStorage.setItem('lastTime_psych_v3', lastTime);
+        localStorage.setItem('deck_psych_v4', JSON.stringify(deck));
+        localStorage.setItem('targetColor_psych_v4', targetColor);
+        localStorage.setItem('lastTime_psych_v4', lastTime);
     }
 
     function toggleModal(show) {
