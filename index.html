@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Jeu de l'As - Édition Puriste</title>
+    <title>Le Jeu de l'As - Édition Psychologique</title>
     <style>
         :root { --bg: #0f1215; --card-bg: #1c252e; --accent: #e91e63; --red: #ff5252; --white: #ffffff; --gold: #ffca28; }
         body { font-family: 'Segoe UI', sans-serif; text-align: center; background: var(--bg); color: #e0e0e0; padding: 20px; }
@@ -14,7 +14,7 @@
         .card-value { font-size: 3rem; font-weight: bold; }
         .card-suit { font-size: 5rem; margin-top: -10px; }
         
-        .instruction { font-size: 1.1rem; font-weight: 600; color: var(--gold); margin: 20px 0; min-height: 100px; line-height: 1.4; border: 1px dashed #444; padding: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .instruction { font-size: 1.1rem; font-weight: 600; color: var(--gold); margin: 20px 0; min-height: 100px; line-height: 1.4; border: 1px dashed #444; padding: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; whitespace: pre-line; }
         .main-btn { padding: 18px; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; width: 100%; font-weight: bold; margin-bottom: 10px; transition: 0.3s; }
         .main-btn:hover { opacity: 0.9; transform: scale(1.02); }
         
@@ -24,7 +24,7 @@
         .rules-link { color: #5c7080; text-decoration: underline; cursor: pointer; font-size: 0.85rem; margin-top: 15px; display: inline-block; }
         .stats { margin-top: 25px; color: #5c7080; font-size: 0.8rem; }
         
-        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; overflow-y: auto; padding: 20px; box-sizing: border-box; display: none; align-items: center; justify-content: center; }
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; overflow-y: auto; padding: 20px; box-sizing: border-box; align-items: center; justify-content: center; }
         .modal-content { max-width: 400px; background: #1c252e; padding: 25px; border-radius: 20px; text-align: left; line-height: 1.5; border: 1px solid #444; }
         .modal-content h2 { color: var(--accent); text-align: center; margin-top: 0; }
         .modal-content h3 { color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 5px; font-size: 1rem; }
@@ -38,10 +38,10 @@
 <body>
 
 <div class="container">
-    <h1>JEU DE L'AS</h1>
+    <h1>JEU DE L'AS ⚡</h1>
     
     <div id="setup">
-        <p>Choisissez votre cible.<br><small>(29 cartes : 1 seul As disponible)</small></p>
+        <p>Choisissez votre couleur cible.<br><small>(Paquet de 25 cartes)</small></p>
         <div class="suit-grid">
             <div class="suit-card" style="color:var(--red)" onclick="initGame('♥️')">♥️</div>
             <div class="suit-card" style="color:var(--red)" onclick="initGame('♦️')">♦️</div>
@@ -51,7 +51,7 @@
     </div>
 
     <div id="game" style="display:none;">
-        <div style="font-size: 0.8rem; color: #5c7080;">CIBLE : <span id="targetDisplay"></span></div>
+        <div style="font-size: 0.8rem; color: #5c7080;">CIBLE DIRECTE : <span id="targetDisplay"></span></div>
         <div class="card" id="cardElement">
             <div id="cardBack"></div>
             <div id="cardInner" style="display:none;">
@@ -60,37 +60,37 @@
             </div>
         </div>
         <div class="instruction" id="instructionArea">Le paquet est prêt.</div>
-        <button id="drawBtn" class="main-btn" onclick="drawCard()">PIOCHER LA CARTE</button>
-        <button id="resetBtn" class="main-btn" onclick="resetGame()" style="display:none; background: #2ecc71;">VICTOIRE ! NOUVEAU CYCLE</button>
+        <button id="drawBtn" class="main-btn" onclick="drawCard()">PIOCHER UNE CARTE</button>
+        <button id="resetBtn" class="main-btn" onclick="resetGame()" style="display:none; background: #2ecc71;">NOUVEAU CYCLE</button>
         
-        <div class="rules-link" onclick="toggleModal(true)">Afficher les règles du jeu</div>
+        <div class="rules-link" onclick="toggleModal(true)">Afficher les règles</div>
 
-        <div class="stats">PAQUET : <span id="count">29</span> CARTES RESTANTES</div>
+        <div class="stats">PAQUET : <span id="count">25</span> CARTES RESTANTES</div>
     </div>
     
-    <div class="footer-reset" onclick="resetGame()">Réinitialiser tout</div>
+    <div class="footer-reset" onclick="resetGame()">Réinitialiser la partie</div>
 </div>
 
 <div id="modal">
     <div class="modal-content">
         <h2>📜 RÈGLES DU JEU</h2>
         
-        <h3>🎯 L'Objectif Unique</h3>
+        <h3>🎯 L'Objectif & Les As</h3>
         <ul>
-            <li><strong>As de votre couleur :</strong> L'unique chemin vers l'orgasme !</li>          
+            <li><strong>As de TA couleur (La Libération) :</strong> Autorisation de jouir après 11 minutes de masturbation.</li>          
+            <li><strong>As des AUTRES couleurs (La Frustration) :</strong> Orgasme ruiné après 11 minutes de masturbation OU pas d'orgasme (au choix de la maîtresse du jeu).</li>          
         </ul>
 
         <h3>🤴 Les Figures</h3>
         <ul>
-            <li><strong>ROI :</strong> 13 min tout de suite + 13 min demain matin. (Si cible : 26+26).</li>
-            <li><strong>DAME :</strong> 24 heures d'abstinence (pas de masturbation ce soir). (Si cible : 48h).</li>
-            <li><strong>VALET :</strong> 11 min + Temps d'hier. (Si cible : 22 min + Temps d'hier).</li>
+            <li><strong>VALET (Le Temps) :</strong> 10 minutes de masturbation + le temps effectué la veille.</li>
+            <li><strong>DAME (La Modération) :</strong> 24 heures d'abstinence strictes. Fin de la session.</li>
+            <li><strong>ROI (La Luxure) :</strong> 10 minutes de masturbation tout de suite + 10 minutes de masturbation le lendemain au réveil.</li>
         </ul>
 
-        <h3>🃏 Cartes Numériques (7 à 10)</h3>
+        <h3>🃏 Les Cartes Numériques (7 à 10)</h3>
         <ul>
-            <li><strong>Couleur Cible :</strong> Temps doublé OU Abstinence 24h.</li>
-            <li><strong>Autre Couleur :</strong> Temps indiqué en minutes.</li>
+            <li><strong>7, 8, 9, 10 :</strong> Le nombre indiqué de minutes de masturbation sans jouir avant la prochaine pioche.</li>
         </ul>
 
         <button class="close-btn" onclick="toggleModal(false)">Fermer</button>
@@ -103,11 +103,11 @@
     let lastTime = 0;
 
     function checkMemory() {
-        const savedDeck = localStorage.getItem('deck_purist_v1');
+        const savedDeck = localStorage.getItem('deck_psych_v3');
         if (savedDeck) {
             deck = JSON.parse(savedDeck);
-            targetColor = localStorage.getItem('targetColor_purist_v1');
-            lastTime = parseInt(localStorage.getItem('lastTime_purist_v1') || 0);
+            targetColor = localStorage.getItem('targetColor_psych_v3');
+            lastTime = parseInt(localStorage.getItem('lastTime_psych_v3') || 0);
             document.getElementById('targetDisplay').innerText = targetColor;
             document.getElementById('setup').style.display = 'none';
             document.getElementById('game').style.display = 'block';
@@ -117,23 +117,28 @@
 
     function initGame(color) {
         targetColor = color;
-        createDeckPurist(color);
+        createDeck(color);
         document.getElementById('targetDisplay').innerText = targetColor;
         document.getElementById('setup').style.display = 'none';
         document.getElementById('game').style.display = 'block';
         updateStats();
     }
 
-    function createDeckPurist(color) {
+    function createDeck(color) {
         const suits = ['♥️', '♦️', '♠️', '♣️'];
-        const values = [{n:'7',v:7},{n:'8',v:8},{n:'9',v:9},{n:'10',v:10},{n:'J',v:11},{n:'Q',v:12},{n:'K',v:13}];
+        const values = [{n:'7',v:7},{n:'8',v:8},{n:'9',v:9},{n:'10',v:10},{n:'J',v:10},{n:'Q',v:0},{n:'K',v:10}];
         
         deck = [];
-        // Ajout des cartes 7 à Roi pour toutes les couleurs
-        suits.forEach(s => values.forEach(v => deck.push({suit:s, name:v.n, val:v.v})));
         
-        // Ajout du SEUL As de la couleur cible
-        deck.push({suit: color, name: 'A', val: 1});
+        // Ajout des cartes 7 à Roi pour les 3 couleurs non-sélectionnées uniquement
+        suits.forEach(s => {
+            if (s !== color) {
+                values.forEach(v => deck.push({suit:s, name:v.n, val:v.v}));
+            }
+        });
+        
+        // Ajout des 4 As (l'unique carte de la couleur cible + les 3 as de frustration)
+        suits.forEach(s => deck.push({suit: s, name: 'A', val: 11}));
         
         deck.sort(() => Math.random() - 0.5); 
         save();
@@ -141,9 +146,9 @@
 
     function drawCard() {
         if (deck.length === 0) return;
+        
         const card = deck.pop();
         const isRed = (card.suit === '♥️' || card.suit === '♦️');
-        const isTarget = (card.suit === targetColor);
         
         document.getElementById('cardBack').style.display = 'none';
         document.getElementById('cardInner').style.display = 'block';
@@ -154,36 +159,37 @@
         let msg = "";
         let currentTime = card.val;
 
+        // Gestion des As
         if (card.name === 'A') {
-            msg = "FÉLICITATIONS ! TU AS LE DROIT DE JOUIR !";
+            if (card.suit === targetColor) {
+                msg = "✨ L'AS DE TA COULEUR : LA LIBÉRATION ! ✨\nAutorisation de jouir après 11 minutes de masturbation.";
+            } else {
+                msg = "💀 AS DE FRUSTRATION... 💀\nOrgasme ruiné après 11 minutes de masturbation OU pas d'orgasme si la maîtresse du jeu le décide.";
+            }
             document.getElementById('drawBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'block';
             localStorage.clear();
             updateDisplay(msg);
             return;
-        } 
-        
-        if (card.name === 'K') {
-            if (isTarget) { msg = "ROI CIBLE : 26 min tout de suite ET 26 min demain matin."; currentTime = 52; } 
-            else { msg = "ROI : 13 min tout de suite + 13 min demain matin."; currentTime = 26; }
         }
+
+        // Gestion des figures selon tes profils exacts
+        if (card.name === 'J') {
+            let totalValet = 10 + lastTime;
+            msg = `🕵️‍♂️ VALET (Le Temps) :\n10 min + temps de la veille (${lastTime} min).\nSoit : ${totalValet} minutes de masturbation sans jouir.`;
+            currentTime = totalValet;
+        } 
         else if (card.name === 'Q') {
-            if (isTarget) { msg = "DAME CIBLE : 48 heures d'abstinence (pas de masturbation pendant 2 jours)."; } 
-            else { msg = "DAME : 24 heures d'abstinence (pas de masturbation ce soir)."; }
+            msg = "🛑 DAME (La Modération) :\nFin de la session immédiate.\nTu es condamné à 24 heures d'abstinence strictes.";
             currentTime = 0;
-        }
-        else if (card.name === 'J') {
-            let base = isTarget ? 22 : 11;
-            let total = base + lastTime;
-            msg = `VALET ${isTarget ? 'CIBLE' : ''} : ${total} min (${base} + ${lastTime} d'hier).`;
-            currentTime = total;
-        }
-        else if (isTarget) {
-            msg = `${card.val * 2} min sans jouir OU abstinence 24h.`;
-            currentTime = card.val * 2;
         } 
+        else if (card.name === 'K') {
+            msg = "👑 ROI (La Luxure) :\n10 minutes de masturbation tout de suite + 10 minutes de masturbation le lendemain au réveil.";
+            currentTime = 10;
+        } 
+        // Cartes numériques normales
         else {
-            msg = `${card.val} minutes de masturbation sans jouir.`;
+            msg = `⏳ ${card.val} minutes de masturbation sans jouir avant la prochaine pioche.`;
         }
 
         lastTime = currentTime;
@@ -201,9 +207,9 @@
     }
 
     function save() {
-        localStorage.setItem('deck_purist_v1', JSON.stringify(deck));
-        localStorage.setItem('targetColor_purist_v1', targetColor);
-        localStorage.setItem('lastTime_purist_v1', lastTime);
+        localStorage.setItem('deck_psych_v3', JSON.stringify(deck));
+        localStorage.setItem('targetColor_psych_v3', targetColor);
+        localStorage.setItem('lastTime_psych_v3', lastTime);
     }
 
     function toggleModal(show) {
@@ -211,7 +217,7 @@
     }
 
     function resetGame() {
-        if(confirm("Voulez-vous vraiment réinitialiser le cycle ?")) {
+        if(confirm("Voulez-vous réinitialiser le paquet ?")) {
             localStorage.clear();
             location.reload();
         }
